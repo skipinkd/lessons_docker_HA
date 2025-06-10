@@ -292,3 +292,45 @@ docker rmi ghcr.io/home-assistant/home-assistant:stable
 ```shell
 docker run -d --name homeassistant --privileged --restart=unless-stopped -e TZ=Europe/Moscow -v /run/dbus:/run/dbus:ro -v /mnt/data/.HA:/config --network=host ghcr.io/home-assistant/home-assistant:stable
 ```
+
+# Временно решения для ошибки wb2504 wb-engine (не появляются утсройства в HA, после перезапуска контроллера)
+Для исправления данной проблемы, я предлагаю создать сервис который будет перезапускать правила второй раз после запуса системы через 60сек
+
+#### 1. Создайте systemd-юнит
+Откройте или создайте файл:
+```shell
+nano /etc/systemd/system/restart-wb-rules-delayed.service
+```
+
+Вставьте следующее содержимое:
+```shell
+[Unit]
+Description=Restart wb-rules service with delay after boot
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash -c "/usr/bin/sleep 60 && /usr/bin/systemctl restart wb-rules.service"
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+```
+
+#### 2. Включите юнит в автозагрузку
+Введите последовательно(каждую строчку) данные команды:
+```shell
+systemctl daemon-reload
+systemctl enable restart-wb-rules-delayed.service
+```
+
+#### 3. (Опционально) Проверка
+После настройки вы можете проверить статус юнита:
+```shell
+systemctl status restart-wb-rules-delayed.service
+```
+
+Или протестировать его принудительно:
+```shell
+systemctl start restart-wb-rules-delayed.service
+```
