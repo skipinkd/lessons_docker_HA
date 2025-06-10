@@ -293,6 +293,42 @@ docker rmi ghcr.io/home-assistant/home-assistant:stable
 docker run -d --name homeassistant --privileged --restart=unless-stopped -e TZ=Europe/Moscow -v /run/dbus:/run/dbus:ro -v /mnt/data/.HA:/config --network=host ghcr.io/home-assistant/home-assistant:stable
 ```
 
+# Установка HACS
+https://www.hacs.xyz/docs/use/download/download/#to-download-hacs
+Для начала перейдем в каталог нашего homeassistant:
+```shell
+cd /mnt/data/.HA
+```
+
+И установим наш HACS:
+```shell
+wget -O - https://get.hacs.xyz | bash -
+```
+
+Далее нужно перезагрузить homeassistant, потом уставить его во вкладке `Интеграции`
+![image](https://github.com/user-attachments/assets/404d6bca-4dbb-4706-95ad-b1c0deb32f12)
+
+После этого, авторизация через github и перезагрузка страницы.
+
+# Установка HACS
+https://github.com/4mr/wb-engine
+
+Вводим команды последовательно (каждую строчку).
+
+Wirenboard 8
+```shell
+wget https://github.com/4mr/wb-engine/releases/latest/download/wb-engine_arm64.deb
+dpkg -i wb-engine_arm64.deb
+rm wb-engine_arm64.deb
+```
+
+Wirenboard 6,7
+```shell
+wget https://github.com/4mr/wb-engine/releases/latest/download/wb-engine_armhf.deb
+dpkg -i wb-engine_armhf.deb
+rm wb-engine_armhf.deb
+```
+
 # Временно решения для ошибки wb2504 wb-engine (не появляются утсройства в HA, после перезапуска контроллера)
 Для исправления данной проблемы, я предлагаю создать сервис который будет перезапускать правила второй раз после запуса системы через 60сек
 
