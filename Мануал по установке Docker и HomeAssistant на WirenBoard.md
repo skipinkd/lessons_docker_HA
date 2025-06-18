@@ -310,7 +310,7 @@ wget -O - https://get.hacs.xyz | bash -
 
 После этого, авторизация через github и перезагрузка страницы.
 
-# Установка HACS
+# Установка wb-engine
 https://github.com/4mr/wb-engine
 
 Вводим команды последовательно (каждую строчку).
