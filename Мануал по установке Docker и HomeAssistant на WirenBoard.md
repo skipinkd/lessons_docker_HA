@@ -370,3 +370,25 @@ systemctl status restart-wb-rules-delayed.service
 ```shell
 systemctl start restart-wb-rules-delayed.service
 ```
+
+
+## Удаление временного решения
+1. Остановите юнит (если он запущен)
+```shell
+systemctl stop restart-wb-rules-delayed.service
+```
+
+2. Отключите автозагрузку юнита
+```shell
+systemctl disable restart-wb-rules-delayed.service
+```
+
+3. Удалите файл юнита
+```shell
+rm /etc/systemd/system/restart-wb-rules-delayed.service
+```
+
+4. Перезагрузите конфигурацию systemd
+```shell
+systemctl daemon-reload
+```
