@@ -85,13 +85,42 @@ docker run hello-world
 
 Если в консоли появилась надпись ``Hello from Docker!``, docker установлен и работает.
 
+## ВАЖНО! Сейчас появились образы, которые много весят и для этого мы переместим каталог из корня в другое место.
+
+1. Остановите сервисы
+```bash
+systemctl stop docker containerd
+```
+
+2. Создайте папку
+```bash
+mkdir -p /mnt/data/containerd
+```
+
+3. Очистите старый containerd
+```bash
+rm -rf /var/lib/containerd/*
+```
+
+4. Сгенерируйте стандартный конфиг containerd
+```bash
+containerd config default > /etc/containerd/config.toml
+```
+
+5. Поменяйте путь
+```bash
+sed -i 's|/var/lib/containerd|/mnt/data/containerd|' /etc/containerd/config.toml
+```
+
+6. Запустите обратно
+```bash
+systemctl start containerd docker
+```
+
 Иногда требуется перезагрузка командой:
 ```bash
 reboot
 ```
-
-затем повторить проверку.
-
 
 # Установка HomeAssistant
 
